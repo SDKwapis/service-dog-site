@@ -1,3 +1,5 @@
+// server.js
+
 const express = require('express');
 const path = require('path');
 const sequelize = require('./models');
@@ -10,18 +12,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// serve all files in /public (CSS, JS, images, etc.)
+// serve static assets from /public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// mount your API endpoints (e.g. GET /api/goal, /api/videos)
+// API routes (e.g. GET /api/goal, PUT /api/goal, GET /api/videos)
 app.use('/api', apiRoutes);
 
-// serve your front-end
+// serve the main site
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// sync models & launch
+// serve the admin page at /admin
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin.html'));
+});
+
 sequelize.sync()
   .then(() => {
     app.listen(PORT, () => {
@@ -31,4 +37,5 @@ sequelize.sync()
   .catch(err => {
     console.error('Failed to sync database:', err);
   });
+
 

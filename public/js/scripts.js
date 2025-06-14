@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadGoalAndVideos() {
   const goalText = document.getElementById("goal-text");
-  const progressBar = document.getElementById("progress-bar");
+  const progressFill = document.getElementById("progress-fill");
   const videoList = document.getElementById("video-list");
 
   try {
@@ -29,8 +29,8 @@ async function loadGoalAndVideos() {
     const goal = await goalRes.json();
     const percent = Math.floor((goal.current / goal.target) * 100);
 
-    progressBar.style.width = `${percent}%`;
-    progressBar.textContent = `${percent}%`;
+    progressFill.style.width = `${percent}%`;
+    progressFill.textContent = percent > 10 ? `${percent}%` : "";
     goalText.textContent = `$${goal.current} raised of $${goal.target} goal`;
   } catch (err) {
     console.error("Failed to load goal:", err);
@@ -68,6 +68,7 @@ async function loadGoalAndVideos() {
   }
 }
 
+// Hero image slideshow logic
 document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll("#hero-slideshow img");
   let current = 0;
@@ -85,3 +86,4 @@ document.addEventListener("DOMContentLoaded", () => {
   slides[0].classList.add("opacity-100");
   setInterval(showNextSlide, 5000); // change every 5 seconds
 });
+
